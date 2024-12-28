@@ -65,6 +65,14 @@ const ProblemList = () => {
     problem.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleDelete = (id: string) => {
+    if (window.confirm('Bu problemi silmek istediğinize emin misiniz?')) {
+      const updatedProblems = problems.filter(problem => problem.id !== id);
+      setProblems(updatedProblems);
+      localStorage.setItem(storageKey, JSON.stringify(updatedProblems));
+    }
+  };
+
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -119,6 +127,9 @@ const ProblemList = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">
                 Tarih
               </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">
+                İşlem
+              </th>
             </tr>
           </thead>
           <tbody className="bg-gray-900 divide-y divide-gray-700">
@@ -146,7 +157,7 @@ const ProblemList = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   {problem.projectLink ? (
                     <a href={problem.projectLink} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">
-                      Soruya Git
+                      Projeye Git
                     </a>
                   ) : (
                     <span className="text-gray-500">Link yok</span>
@@ -154,6 +165,17 @@ const ProblemList = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                   {new Date(problem.date).toLocaleDateString('tr-TR')}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-red-400">
+                  <button
+                    onClick={() => handleDelete(problem.id)}
+                    className="text-red-500 hover:text-red-700 transition-colors flex items-center"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v1a1 1 0 001 1h1v10a2 2 0 002 2h6a2 2 0 002-2V7h1a1 1 0 001-1V6a2 2 0 00-2-2h-1V3a1 1 0 00-1-1H6zm3 5a1 1 0 012 0v7a1 1 0 11-2 0V7zm-2 0a1 1 0 012 0v7a1 1 0 11-2 0V7z" clipRule="evenodd" />
+                    </svg>
+                    Sil
+                  </button>
                 </td>
               </tr>
             ))}
